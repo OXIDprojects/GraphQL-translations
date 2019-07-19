@@ -4,17 +4,14 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQl\Sample\Dao\TranslationDaoInterface:
-    class: OxidEsales\GraphQl\Translations\Dao\TranslationDao
+  OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType:
+    class: OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType
 
-  OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType:
-    class: OxidEsales\GraphQl\Sample\Type\Translations\TranslationType
+  OxidEsales\GraphQl\Translations\Type\Provider\LocaleProvider:
+    class: OxidEsales\GraphQl\Translations\Type\Provider\LocaleProvider
+    tags: ['graphql_query_provider']
 
-  OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider:
-    class: OxidEsales\GraphQl\Sample\Type\Translations\TranslationProvider
-    tags: ['graphql_query_provider', 'graphql_mutation_provider']
-
-  OxidEsales\GraphQl\Sample\Service\CategoryPermissionsProvider:
+  OxidEsales\GraphQl\Sample\Service\PermissionsProvider:
     class: OxidEsales\GraphQl\Service\PermissionsProvider
     calls:
       - ['addPermission', ['admin', 'maywritetranslationo']]

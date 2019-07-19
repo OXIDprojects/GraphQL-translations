@@ -6,14 +6,14 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\Type\ObjectType;
+namespace OxidEsales\GraphQl\Translations\Type\ObjectType;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use OxidEsales\GraphQl\Framework\GenericFieldResolverInterface;
 
-class TranslationsType extends ObjectType
+class LocaleType extends ObjectType
 {
 
     /**
@@ -29,11 +29,12 @@ class TranslationsType extends ObjectType
         $this->genericFieldResolver = $genericFieldResolver;
 
         $config = [
-            'name'         => 'Category',
-            'description'  => 'Rudimentary category object',
+            'name'         => 'Locale',
+            'description'  => 'Locale existing in the shop',
             'fields'       => [
-                'id'       => Type::string(),
-                'parentid' => Type::string(),
+                'languagekey'       => Type::nonNull(Type::string()),
+                'isactive' => Type::boolean(),
+                'isdefault' => Type::boolean(),
                 'name'    => Type::string()
             ],
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
