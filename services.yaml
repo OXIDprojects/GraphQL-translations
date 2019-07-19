@@ -1,0 +1,22 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQl\Sample\Dao\TranslationDaoInterface:
+    class: OxidEsales\GraphQl\Translations\Dao\TranslationDao
+
+  OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType:
+    class: OxidEsales\GraphQl\Sample\Type\Translations\TranslationType
+
+  OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider:
+    class: OxidEsales\GraphQl\Sample\Type\Translations\TranslationProvider
+    tags: ['graphql_query_provider', 'graphql_mutation_provider']
+
+  OxidEsales\GraphQl\Sample\Service\CategoryPermissionsProvider:
+    class: OxidEsales\GraphQl\Service\PermissionsProvider
+    calls:
+      - ['addPermission', ['admin', 'maywritetranslationo']]
+      - ['addPermission', ['shopadmin', 'maywritetranslation']]
+    tags: ['graphql_permissions_provider']
