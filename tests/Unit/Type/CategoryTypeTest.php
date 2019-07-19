@@ -10,7 +10,7 @@ namespace OxidEsales\GraphQl\Sample\Tests\Unit\Type;
 use OxidEsales\GraphQl\Framework\GenericFieldResolver;
 use OxidEsales\GraphQl\Framework\SchemaFactory;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQl\Sample\DataObject\Translations;
+use OxidEsales\GraphQl\Sample\DataObject\Translation;
 use OxidEsales\GraphQl\Sample\Type\ObjectType\LocaleType;
 use OxidEsales\GraphQl\Sample\Type\Provider\LocaleProvider;
 use OxidEsales\GraphQl\Tests\Unit\Type\GraphQlTypeTestCase;
@@ -51,7 +51,7 @@ class CategoryTypeTest extends GraphQlTypeTestCase
 
         $this->addPermission($this::DEFAULTGROUP, 'mayreaddata');
 
-        $category = new Translations();
+        $category = new Translation();
         $category->setId('someid');
         $category->setName('somename');
         $category->setParentId('someparentid');
@@ -110,12 +110,12 @@ EOQ;
 
         $this->addPermission($this::DEFAULTGROUP, 'mayreaddata');
 
-        $category1 = new Translations();
+        $category1 = new Translation();
         $category1->setId('id1');
         $category1->setName('name1');
         $category1->setParentId('parentid');
 
-        $category2 = new Translations();
+        $category2 = new Translation();
         $category2->setId('id2');
         $category2->setName('name2');
         $category2->setParentId('parentid');
