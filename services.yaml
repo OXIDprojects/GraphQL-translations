@@ -11,7 +11,14 @@ services:
     class: OxidEsales\GraphQl\Translations\Type\Provider\LocaleProvider
     tags: ['graphql_query_provider']
 
-  OxidEsales\GraphQl\Sample\Service\PermissionsProvider:
+  OxidEsales\GraphQl\Translations\Type\ObjectType\TranslationType:
+    class: OxidEsales\GraphQl\Translations\Type\ObjectType\TranslationType
+
+  OxidEsales\GraphQl\Translations\Type\Provider\TranslationProvider:
+    class: OxidEsales\GraphQl\Translations\Type\Provider\TranslationProvider
+    tags: ['graphql_query_provider','graphql_mutation_provider']
+
+  OxidEsales\GraphQl\Service\PermissionsProvider:
     class: OxidEsales\GraphQl\Service\PermissionsProvider
     calls:
       - ['addPermission', ['admin', 'maywritetranslationo']]
