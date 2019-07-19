@@ -18,6 +18,7 @@ use OxidEsales\GraphQl\Type\Provider\QueryProviderInterface;
 
 class TranslationProvider implements QueryProviderInterface, MutationProviderInterface
 {
+
     /** @var  PermissionsServiceInterface */
     private $permissionsService;
 
@@ -39,7 +40,8 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
 
     public function getQueries()
     {
-        return ['translations' => [
+        return [
+            'translations' => [
                 'type'        => Type::listOf($this->translationType),
                 'description' => 'Get a list of translations.',
                 'args'        => [
@@ -64,11 +66,29 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
 
     public function getMutations()
     {
-        return [];
+        return [
+            'updateTranslation' => [
+                'type'        => Type::STRING,
+                'description' => 'update translation object',
+                'args'        => [
+                    'languagekey' => Type::nonNull(Type::string()),
+                    'name'        => Type::nonNull(Type::string()),
+                    'value'       => Type::nonNull(Type::string())
+                ]
+            ]
+        ];
     }
 
     public function getMutationResolvers()
     {
-        return [];
+        return [
+            'updateTranslation' => function ($value, $args, $context, ResolveInfo $info) {
+                /** @var AppContext $context */
+                $token = $context->getAuthToken();
+                $this->permissionsService->checkPermission($token, 'mywritedata');
+
+                return '';
+            }
+        ];
     }
 }
