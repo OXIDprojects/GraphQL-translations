@@ -30,7 +30,7 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
     public function __construct(
         PermissionsServiceInterface $permissionsService,
         TranslationType $translationType,
-        LocalType $localeType
+        LocaleType $localeType
     ) {
         $this->permissionsService = $permissionsService;
         $this->translationType = $translationType;

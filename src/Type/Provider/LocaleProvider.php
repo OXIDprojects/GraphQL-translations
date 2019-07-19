@@ -24,8 +24,8 @@ class LocaleProvider implements QueryProviderInterface
 
     public function __construct(
         PermissionsServiceInterface $permissionsService,
-        LocaleType $localeType)
-    {
+        LocaleType $localeType
+    ) {
         $this->permissionsService = $permissionsService;
         $this->localeType = $localeType;
     }
