@@ -39,8 +39,7 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
 
     public function getQueries()
     {
-        return ['
-            translations' => [
+        return ['translations' => [
                 'type'        => Type::listOf($this->translationType),
                 'description' => 'Get a list of translations.',
                 'args'        => [
