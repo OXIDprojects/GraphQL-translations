@@ -79,4 +79,9 @@ class TranslationService implements TranslationServiceInterface
         }
         throw new TranslationKeyNotFound();
     }
+
+    public function updateTranslation(string $languageKey, string $value, string $name): Translation
+    {
+
+    }
 }

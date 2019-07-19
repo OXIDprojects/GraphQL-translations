@@ -27,6 +27,6 @@ services:
   OxidEsales\GraphQl\Service\PermissionsProvider:
     class: OxidEsales\GraphQl\Service\PermissionsProvider
     calls:
-      - ['addPermission', ['admin', 'maywritetranslationo']]
+      - ['addPermission', ['admin', 'maywritetranslation']]
       - ['addPermission', ['shopadmin', 'maywritetranslation']]
     tags: ['graphql_permissions_provider']

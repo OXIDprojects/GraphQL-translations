@@ -85,7 +85,7 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
     {
         return [
             'updateTranslation' => [
-                'type'        => Type::STRING,
+                'type'        => $this->translationType,
                 'description' => 'update translation object',
                 'args'        => [
                     'languagekey' => Type::nonNull(Type::string()),
@@ -102,9 +102,9 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
             'updateTranslation' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
-                $this->permissionsService->checkPermission($token, 'mywritedata');
+                $this->permissionsService->checkPermission($token, 'maywritetranslation');
 
-                return '';
+                return $this->translationService->updateTranslation($args['languagekey'], $args['value'], $args['name']);
             }
         ];
     }
