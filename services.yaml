@@ -4,6 +4,9 @@ services:
     public: false
     autowire: true
 
+  OxidEsales\GraphQl\Translations\Service\LocaleServiceInterface:
+    class: OxidEsales\GraphQl\Translations\Service\LocaleService
+
   OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType:
     class: OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType
 

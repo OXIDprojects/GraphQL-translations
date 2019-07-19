@@ -11,8 +11,8 @@ use OxidEsales\GraphQl\Framework\GenericFieldResolver;
 use OxidEsales\GraphQl\Framework\SchemaFactory;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQl\Sample\DataObject\Translations;
-use OxidEsales\GraphQl\Sample\Type\ObjectType\TranslationsType;
-use OxidEsales\GraphQl\Sample\Type\Provider\TranslationsProvider;
+use OxidEsales\GraphQl\Sample\Type\ObjectType\LocaleType;
+use OxidEsales\GraphQl\Sample\Type\Provider\LocaleProvider;
 use OxidEsales\GraphQl\Tests\Unit\Type\GraphQlTypeTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -35,10 +35,10 @@ class CategoryTypeTest extends GraphQlTypeTestCase
         parent::setUp();
 
         $this->categoryDao = $this->getMockBuilder(CategoryDaoInterface::class)->getMock();
-        $categoryProvider = new TranslationsProvider(
+        $categoryProvider = new LocaleProvider(
             $this->categoryDao,
             $this->permissionsService,
-            new TranslationsType(new GenericFieldResolver()));
+            new LocaleType(new GenericFieldResolver()));
 
         $schemaFactory = new SchemaFactory();
         $schemaFactory->addQueryProvider($categoryProvider);

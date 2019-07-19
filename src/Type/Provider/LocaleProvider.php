@@ -10,12 +10,16 @@ namespace OxidEsales\GraphQl\Translations\Type\Provider;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use OxidEsales\GraphQl\Framework\AppContext;
+use OxidEsales\GraphQl\Translations\Service\LocaleServiceInterface;
 use OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType;
 use OxidEsales\GraphQl\Service\PermissionsServiceInterface;
 use OxidEsales\GraphQl\Type\Provider\QueryProviderInterface;
 
 class LocaleProvider implements QueryProviderInterface
 {
+    /** @var LocaleServiceInterface $localeService */
+    private $localeService;
+
     /** @var  PermissionsServiceInterface */
     private $permissionsService;
 
@@ -23,9 +27,11 @@ class LocaleProvider implements QueryProviderInterface
     private $localeType;
 
     public function __construct(
+        LocaleServiceInterface $localeService,
         PermissionsServiceInterface $permissionsService,
         LocaleType $localeType)
     {
+        $this->localeService = $localeService;
         $this->permissionsService = $permissionsService;
         $this->localeType = $localeType;
     }
@@ -54,13 +60,14 @@ class LocaleProvider implements QueryProviderInterface
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-                return null;
+                $languageKey = $args['languagekey'];
+                return $this->localeService->getLocale($languageKey);
             },
             'locales' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-                return [];
+                return $this->localeService->getLocales();
             }
         ];
     }
