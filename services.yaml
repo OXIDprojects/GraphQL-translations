@@ -7,6 +7,9 @@ services:
   OxidEsales\GraphQl\Translations\Service\LocaleServiceInterface:
     class: OxidEsales\GraphQl\Translations\Service\LocaleService
 
+  OxidEsales\GraphQl\Translations\Service\TranslationServiceInterface:
+    class: OxidEsales\GraphQl\Translations\Service\TranslationService
+
   OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType:
     class: OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType
 

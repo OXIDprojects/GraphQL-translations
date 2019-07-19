@@ -10,6 +10,7 @@ namespace OxidEsales\GraphQl\Translations\Type\Provider;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use OxidEsales\GraphQl\Framework\AppContext;
+use OxidEsales\GraphQl\Translations\Service\TranslationServiceInterface;
 use OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType;
 use OxidEsales\GraphQl\Service\PermissionsServiceInterface;
 use OxidEsales\GraphQl\Translations\Type\ObjectType\TranslationType;
@@ -21,6 +22,9 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
     /** @var  PermissionsServiceInterface */
     private $permissionsService;
 
+    /** @var TranslationServiceInterface */
+    private $translationService;
+
     /** @var  TranslationType */
     private $translationType;
 
@@ -29,23 +33,32 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
 
     public function __construct(
         PermissionsServiceInterface $permissionsService,
-        TranslationType $translationType,
-        LocaleType $localeType
+        TranslationServiceInterface $translationService,
+        TranslationType $translationType
     ) {
         $this->permissionsService = $permissionsService;
+        $this->translationService =$translationService;
         $this->translationType = $translationType;
-        $this->localeType = $localeType;
     }
 
     public function getQueries()
     {
-        return ['translations' => [
+        return [
+            'translations' => [
                 'type'        => Type::listOf($this->translationType),
                 'description' => 'Get a list of translations.',
                 'args'        => [
                     'languagekey' => Type::nonNull(Type::string())
                 ]
             ],
+            'translation' => [
+                'type'  => $this->translationType,
+                'description' => 'Get a specific translation for a language',
+                'args' => [
+                    'languagekey' => Type::nonNull(Type::string()),
+                    'translationkey' => Type::nonNull(Type::string())
+                ]
+            ]
         ];
     }
 
@@ -56,8 +69,13 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-
-                return [];
+                return $this->translationService->getTranslations($args['languagekey']);
+            },
+            'translation' => function ($value, $args, $context, ResolveInfo $info) {
+                /** @var AppContext $context */
+                $token = $context->getAuthToken();
+                $this->permissionsService->checkPermission($token, 'mayreaddata');
+                return $this->translationService->getTranslation($args['languagekey'], $args['translationkey']);
             }
         ];
     }
