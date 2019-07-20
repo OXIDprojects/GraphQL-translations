@@ -39,8 +39,8 @@ class TranslationService implements TranslationServiceInterface
                 continue;
             }
             $translation = new Translation();
-            $translation->setName($key);
-            $translation->setValue($value);
+            $translation->setTranslationKey($key);
+            $translation->setTranslationValue($value);
             $translation->setLanguagekey($languageKey);
             $translations[] = $translation;
         }
@@ -73,15 +73,79 @@ class TranslationService implements TranslationServiceInterface
     public function getTranslation(string $languageKey, string $translationKey): Translation
     {
         foreach ($this->getTranslations($languageKey) as $translation) {
-            if ($translation->getName() === strtoupper($translationKey)) {
+            if ($translation->getTranslationKey() === strtoupper($translationKey)) {
                 return $translation;
             }
         }
         throw new TranslationKeyNotFound();
     }
 
-    public function updateTranslation(string $languageKey, string $value, string $name): Translation
+    /**
+     * @param string $languageKey
+     * @param string $translationKey
+     * @param string $translationValue
+     * @return Translation
+     */
+    public function updateTranslation(string $languageKey, string $translationKey, string $translationValue): Translation
     {
+        $config = $this->getConfig();
+        $appDir = $config->getAppDir();
+        $languages = $config->getConfigParam('aLanguages');
 
+        $sLangName = $languages[$languageKey];
+        $aLang[$translationKey] = $translationValue;
+
+        // shop custom languages
+        $file = $appDir . 'translations/' . $languageKey . '/cust_lang.php';
+
+        if (file_exists($file) && is_readable($file)) {
+            include $file;
+        }
+
+        $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
+        $aLang[$translationKey] = $translationValue;
+        $content = '<?php
+
+$sLangName  = "'. $sLangName .'";
+
+$aLang = ';
+
+        // Append a new prettified array to the file
+        $content .= $this->_prettyPrintArray($aLang) . ';';
+
+        // Write the contents back to the file
+        if (file_put_contents($file, $content)){
+            return $this->getTranslation( $languageKey, $translationKey);
+        }
+
+        throw new TranslationKeyNotFound();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getConfig()
+    {
+        $config = Registry::getConfig();
+        return $config;
+    }
+
+    /**
+     * @param $arr
+     * @param int $pad
+     * @param string $padStr
+     * @return string
+     */
+    protected function _prettyPrintArray($arr, $pad = 0, $padStr = "\t", $padArrow = 14) {
+        $outerPad = $pad;
+        $innerPad = $pad + 1;
+        $output = '[' . PHP_EOL;
+        foreach ($arr as $k => $v) {
+            $linePad =  $padArrow - round(strlen($k) / 4);
+            $output .= str_repeat($padStr, $innerPad) . '"' . $k . '"' . str_repeat($padStr, (int)$linePad ) . '=> ' . '"' . $v . '",';
+            $output .= PHP_EOL;
+        }
+        $output .= str_repeat($padStr, $outerPad) . ']';
+        return $output;
     }
 }

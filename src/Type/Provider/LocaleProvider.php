@@ -43,7 +43,7 @@ class LocaleProvider implements QueryProviderInterface
                 'type' => $this->localeType,
                 'description' => 'Get a locale object.',
                 'args' => [
-                    'languagekey' => Type::nonNull(Type::string())
+                    'languageKey' => Type::nonNull(Type::string())
                 ]
             ],
             'locales' => [
@@ -60,7 +60,7 @@ class LocaleProvider implements QueryProviderInterface
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-                $languageKey = $args['languagekey'];
+                $languageKey = $args['languageKey'];
                 return $this->localeService->getLocale($languageKey);
             },
             'locales' => function ($value, $args, $context, ResolveInfo $info) {

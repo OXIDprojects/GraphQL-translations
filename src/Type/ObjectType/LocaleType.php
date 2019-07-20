@@ -32,9 +32,9 @@ class LocaleType extends ObjectType
             'name'         => 'Locale',
             'description'  => 'Locale existing in the shop',
             'fields'       => [
-                'languagekey'       => Type::nonNull(Type::string()),
-                'isactive' => Type::boolean(),
-                'isdefault' => Type::boolean(),
+                'languageKey'       => Type::nonNull(Type::string()),
+                'isActive' => Type::boolean(),
+                'isDefault' => Type::boolean(),
                 'name'    => Type::string()
             ],
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {

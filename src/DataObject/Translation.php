@@ -9,59 +9,59 @@ namespace OxidEsales\GraphQl\Translations\DataObject;
 
 class Translation
 {
-    /** @var string $languagekey */
-    private $languagekey;
-    /** @var  string $name */
-    private $name;
-    /** @var  string $value */
-    private $value;
+    /** @var string $languageKey */
+    private $languageKey;
+    /** @var  string $translationKey */
+    private $translationKey;
+    /** @var  string $translationValue */
+    private $translationValue;
 
     /**
      * @return string
      */
-    public function getLanguagekey(): string
+    public function getLanguageKey(): string
     {
-        return $this->languagekey;
+        return $this->languageKey;
     }
 
     /**
-     * @param string $languagekey
+     * @param string $languageKey
      */
-    public function setLanguagekey(string $languagekey): void
+    public function setLanguageKey(string $languageKey): void
     {
-        $this->languagekey = $languagekey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
+        $this->languageKey = $languageKey;
     }
 
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getTranslationKey(): string
     {
-        return $this->value;
+        return $this->translationKey;
     }
 
     /**
-     * @param string $value
+     * @param string $translationKey
      */
-    public function setValue(string $value): void
+    public function setTranslationKey(string $translationKey): void
     {
-        $this->value = $value;
+        $this->translationKey = $translationKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTranslationValue(): string
+    {
+        return $this->translationValue;
+    }
+
+    /**
+     * @param string $translationValue
+     */
+    public function setTranslationValue(string $translationValue): void
+    {
+        $this->translationValue = $translationValue;
     }
 
 
