@@ -70,7 +70,7 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-                return $this->translationService->getTranslations($args['languagekey']);
+                return $this->translationService->getTranslations($args['languageKey']);
             },
             'translation' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */
