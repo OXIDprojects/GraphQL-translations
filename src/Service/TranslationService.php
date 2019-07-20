@@ -90,13 +90,20 @@ class TranslationService implements TranslationServiceInterface
     {
         $config = $this->getConfig();
         $appDir = $config->getAppDir();
+        $customTheme = $config->getConfigParam("sCustomTheme");
+        $theme = $config->getConfigParam("sTheme");
         $languages = $config->getConfigParam('aLanguages');
 
         $sLangName = $languages[$languageKey];
         $aLang[$translationKey] = $translationValue;
 
-        // shop custom languages
-        $file = $appDir . 'translations/' . $languageKey . '/cust_lang.php';
+        if ($customTheme) {
+            // custom theme shop languages
+            $file = $appDir . 'views/' . $customTheme . '/' . $languageKey . '/cust_lang.php';
+        }elseif ($theme) {
+            // theme shop languages
+            $file = $appDir . 'views/' . $theme  . '/' . $languageKey. '/cust_lang.php';
+        }
 
         if (file_exists($file) && is_readable($file)) {
             include $file;
