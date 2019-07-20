@@ -92,6 +92,13 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                     'translationKey' => Type::nonNull(Type::string()),
                     'translationValue' => Type::nonNull(Type::string())
                 ]
+            ],
+            'resetTranslations' => [
+                'type'        => Type::string(),
+                'description' => 'Danger! Delete all changed translations for language.',
+                'args'        => [
+                    'languageKey' => Type::nonNull(Type::string())
+                ]
             ]
         ];
     }
@@ -105,6 +112,14 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 $this->permissionsService->checkPermission($token, 'maywritetranslation');
 
                 return $this->translationService->updateTranslation($args['languageKey'], $args['translationKey'], $args['translationValue']);
+            },
+            'resetTranslations' => function ($value, $args, $context, ResolveInfo $info) {
+                /** @var AppContext $context */
+                $token = $context->getAuthToken();
+                $this->permissionsService->checkPermission($token, 'maywritetranslation');
+                $this->translationService->resetTranslations($args['languageKey']);
+
+                return '';
             }
         ];
     }

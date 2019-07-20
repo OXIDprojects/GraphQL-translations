@@ -16,6 +16,11 @@ class TranslationServiceTest extends TestCase
     {
         $this->translationService = new TranslationService();
     }
+
+    public function tearDown()
+    {
+        $this->translationService->resetTranslations('de');
+    }
     public function testGetTranslations()
     {
         $translations = $this->translationService->getTranslations('en');
@@ -27,6 +32,15 @@ class TranslationServiceTest extends TestCase
     public function testGetTranslation()
     {
         $translation = $this->translationService->getTranslation('de', 'HELP');
-        $this->assertEquals('Hilfe', $translation->getValue());
+        $this->assertEquals('Hilfe', $translation->getTranslationValue());
+    }
+
+    public function testUpdateTranslation()
+    {
+        $this->translationService->updateTranslation('de', 'HELP', 'Zur Hülf');
+        $translation = $this->translationService->getTranslation('de', 'HELP');
+        $this->assertEquals('Zur Hülf', $translation->getTranslationValue()
+        );
+
     }
 }

@@ -8,9 +8,11 @@ namespace OxidEsales\GraphQl\Translations\Service;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Language;
+use OxidEsales\Facts\Facts;
 use OxidEsales\GraphQl\Translations\DataObject\Translation;
 use OxidEsales\GraphQl\Translations\Exception\LocaleNotFound;
 use OxidEsales\GraphQl\Translations\Exception\TranslationKeyNotFound;
+use Webmozart\PathUtil\Path;
 
 class TranslationService implements TranslationServiceInterface
 {
@@ -41,7 +43,7 @@ class TranslationService implements TranslationServiceInterface
             $translation = new Translation();
             $translation->setTranslationKey($key);
             $translation->setTranslationValue($value);
-            $translation->setLanguagekey($languageKey);
+            $translation->setLanguageKey($languageKey);
             $translations[] = $translation;
         }
         return $translations;
@@ -80,54 +82,74 @@ class TranslationService implements TranslationServiceInterface
         throw new TranslationKeyNotFound();
     }
 
+
     /**
      * @param string $languageKey
      * @param string $translationKey
      * @param string $translationValue
      * @return Translation
+     * @throws LocaleNotFound
+     * @throws TranslationKeyNotFound
      */
     public function updateTranslation(string $languageKey, string $translationKey, string $translationValue): Translation
     {
         $config = $this->getConfig();
-        $appDir = $config->getAppDir();
-        $customTheme = $config->getConfigParam("sCustomTheme");
-        $theme = $config->getConfigParam("sTheme");
         $languages = $config->getConfigParam('aLanguages');
 
-        $sLangName = $languages[$languageKey];
-        $aLang[$translationKey] = $translationValue;
+        $langName = $languages[$languageKey];
+        $translations[$translationKey] = $translationValue;
 
-        if ($customTheme) {
-            // custom theme shop languages
-            $file = $appDir . 'views/' . $customTheme . '/' . $languageKey . '/cust_lang.php';
-        }elseif ($theme) {
-            // theme shop languages
-            $file = $appDir . 'views/' . $theme  . '/' . $languageKey. '/cust_lang.php';
+        $translationFile = $this->getTranslationFile($languageKey);
+
+        if (file_exists($translationFile) && is_readable($translationFile)) {
+            include $translationFile;
         }
 
-        if (file_exists($file) && is_readable($file)) {
-            include $file;
-        }
-
-        $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
-        $aLang[$translationKey] = $translationValue;
+        $translations = array_merge(['charset' => 'UTF-8'], $translations);
+        $translations[$translationKey] = $translationValue;
         $content = '<?php
 
-$sLangName  = "'. $sLangName .'";
+$sLangName  = "'. $langName .'";
 
 $aLang = ';
 
         // Append a new prettified array to the file
-        $content .= $this->_prettyPrintArray($aLang) . ';';
+        $content .= $this->_prettyPrintArray($translations) . ';';
 
         // Write the contents back to the file
-        if (file_put_contents($file, $content)){
+        if (file_put_contents($translationFile, $content)){
+            $this->deleteCaches();
             return $this->getTranslation( $languageKey, $translationKey);
         }
 
         throw new TranslationKeyNotFound();
     }
 
+    public function resetTranslations(string $languageKey): void
+    {
+        $translationFile = $this->getTranslationFile($languageKey);
+        if (file_exists($translationFile)) {
+            unlink($translationFile);
+        }
+        $this->deleteCaches();
+    }
+
+    private function getTranslationFile(string $languageKey): string
+    {
+        return Path::join($this->getConfig()->getAppDir(), 'translations', $languageKey, 'z_lang.php');
+    }
+
+    private function deleteCaches()
+    {
+        // Do it quick and dirty
+        $facts = new Facts();
+        $tmpDir = Path::join($facts->getSourcePath(), 'tmp');
+        shell_exec("rm $tmpDir/*langcache*.txt 2>&1 ");
+
+        $classCache = new \ReflectionProperty(Language::class, '_aLangCache');
+        $classCache->setAccessible(true);
+        $classCache->setValue(Registry::getLang(), []);
+    }
     /**
      * @return mixed
      */
