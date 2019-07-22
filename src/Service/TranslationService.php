@@ -139,7 +139,7 @@ $aLang = ';
 
     private function getTranslationFile(string $languageKey): string
     {
-        return Path::join($this->getConfig()->getAppDir(), 'translations', $languageKey, 'z_lang.php');
+        return Path::join($this->getConfig()->getAppDir(), 'translations', $languageKey, 'particular_lang.php');
     }
 
     private function deleteCaches()
