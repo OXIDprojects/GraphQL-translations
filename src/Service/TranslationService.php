@@ -97,7 +97,9 @@ class TranslationService implements TranslationServiceInterface
         $languages = $config->getConfigParam('aLanguages');
 
         $langName = $languages[$languageKey];
-        $translations[$translationKey] = $translationValue;
+
+        // we need to keep the array name ($aLang) from the file in order to merge with the last changes
+        $aLang[$translationKey] = $translationValue;
 
         $translationFile = $this->getTranslationFile($languageKey);
 
@@ -105,8 +107,8 @@ class TranslationService implements TranslationServiceInterface
             include $translationFile;
         }
 
-        $translations = array_merge(['charset' => 'UTF-8'], $translations);
-        $translations[$translationKey] = $translationValue;
+        $aLang  = array_merge(['charset' => 'UTF-8'], $aLang );
+        $aLang [$translationKey] = $translationValue;
         $content = '<?php
 
 $sLangName  = "'. $langName .'";
@@ -114,12 +116,13 @@ $sLangName  = "'. $langName .'";
 $aLang = ';
 
         // Append a new prettified array to the file
-        $content .= $this->_prettyPrintArray($translations) . ';';
+        $content .= $this->_prettyPrintArray($aLang) . ';';
 
         // Write the contents back to the file
         if (file_put_contents($translationFile, $content)){
+            $translation =  $this->getTranslation( $languageKey, $translationKey);
             $this->deleteCaches();
-            return $this->getTranslation( $languageKey, $translationKey);
+            return $translation;
         }
 
         throw new TranslationKeyNotFound();
