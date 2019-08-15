@@ -4,17 +4,17 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQl\Translations\Service\LocaleServiceInterface:
-    class: OxidEsales\GraphQl\Translations\Service\LocaleService
+  OxidEsales\GraphQl\Translations\Service\LanguageServiceInterface:
+    class: OxidEsales\GraphQl\Translations\Service\LanguageService
 
   OxidEsales\GraphQl\Translations\Service\TranslationServiceInterface:
     class: OxidEsales\GraphQl\Translations\Service\TranslationService
 
-  OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType:
-    class: OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType
+  OxidEsales\GraphQl\Translations\Type\ObjectType\LanguageType:
+    class: OxidEsales\GraphQl\Translations\Type\ObjectType\LanguageType
 
-  OxidEsales\GraphQl\Translations\Type\Provider\LocaleProvider:
-    class: OxidEsales\GraphQl\Translations\Type\Provider\LocaleProvider
+  OxidEsales\GraphQl\Translations\Type\Provider\LanguageProvider:
+    class: OxidEsales\GraphQl\Translations\Type\Provider\LanguageProvider
     tags: ['graphql_query_provider']
 
   OxidEsales\GraphQl\Translations\Type\ObjectType\TranslationType:

@@ -13,7 +13,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use OxidEsales\GraphQl\Framework\GenericFieldResolverInterface;
 
-class LocaleType extends ObjectType
+class LanguageType extends ObjectType
 {
 
     /**
@@ -29,13 +29,13 @@ class LocaleType extends ObjectType
         $this->genericFieldResolver = $genericFieldResolver;
 
         $config = [
-            'name'         => 'Locale',
-            'description'  => 'Locale existing in the shop',
+            'name'         => 'Language',
+            'description'  => 'A language object existing in the shop',
             'fields'       => [
-                'languageKey'       => Type::nonNull(Type::string()),
-                'isActive' => Type::boolean(),
-                'isDefault' => Type::boolean(),
-                'name'    => Type::string()
+                'languageKey'   => Type::nonNull(Type::id()),
+                'languageName'  => Type::string(),
+                'isActive'      => Type::boolean(),
+                'isDefault'     => Type::boolean()
             ],
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 return $this->genericFieldResolver->getField($info->fieldName, $value);

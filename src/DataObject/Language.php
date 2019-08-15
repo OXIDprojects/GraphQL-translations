@@ -6,13 +6,13 @@
 
 namespace OxidEsales\GraphQl\Translations\DataObject;
 
-class Locale
+class Language
 {
     private $languageKey;
+    private $languageName;
     private $isActive;
     private $isDefault;
-    private $name;
-
+  
     /**
      * @return mixed
      */
@@ -27,6 +27,22 @@ class Locale
     public function setLanguageKey($languageKey): void
     {
         $this->languageKey = $languageKey;
+    }
+
+        /**
+     * @return mixed
+     */
+    public function getLanguageName()
+    {
+        return $this->languageName;
+    }
+
+    /**
+     * @param mixed $languageName
+     */
+    public function setLanguageName($languageName): void
+    {
+        $this->languageName = $languageName;
     }
 
     /**
@@ -60,23 +76,4 @@ class Locale
     {
         $this->isDefault = $isDefault;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
-    {
-        $this->name = $name;
-    }
-
-
-
 }

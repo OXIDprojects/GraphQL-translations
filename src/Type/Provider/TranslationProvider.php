@@ -49,15 +49,15 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 'type'        => Type::listOf($this->translationType),
                 'description' => 'Get a list of translations.',
                 'args'        => [
-                    'languageKey' => Type::nonNull(Type::string())
+                    'languageKey' => Type::nonNull(Type::id())
                 ]
             ],
             'translation' => [
                 'type'  => $this->translationType,
                 'description' => 'Get a specific translation for a language',
                 'args' => [
-                    'languageKey' => Type::nonNull(Type::string()),
-                    'translationKey' => Type::nonNull(Type::string())
+                    'languageKey' => Type::nonNull(Type::id()),
+                    'translationKey' => Type::nonNull(Type::id())
                 ]
             ]
         ];

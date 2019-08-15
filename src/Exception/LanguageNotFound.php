@@ -6,7 +6,7 @@
 
 namespace OxidEsales\GraphQl\Translations\Exception;
 
-class LocaleNotFound extends \Exception
+class LanguageNotFound extends \Exception
 {
 
 }

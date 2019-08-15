@@ -10,45 +10,45 @@ namespace OxidEsales\GraphQl\Translations\Type\Provider;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use OxidEsales\GraphQl\Framework\AppContext;
-use OxidEsales\GraphQl\Translations\Service\LocaleServiceInterface;
-use OxidEsales\GraphQl\Translations\Type\ObjectType\LocaleType;
+use OxidEsales\GraphQl\Translations\Service\LanguageServiceInterface;
+use OxidEsales\GraphQl\Translations\Type\ObjectType\LanguageType;
 use OxidEsales\GraphQl\Service\PermissionsServiceInterface;
 use OxidEsales\GraphQl\Type\Provider\QueryProviderInterface;
 
-class LocaleProvider implements QueryProviderInterface
+class LanguageProvider implements QueryProviderInterface
 {
-    /** @var LocaleServiceInterface $localeService */
-    private $localeService;
+    /** @var LanguageServiceInterface $languageService */
+    private $languageService;
 
     /** @var  PermissionsServiceInterface */
     private $permissionsService;
 
-    /** @var  LocaleType */
-    private $localeType;
+    /** @var  LanguageType */
+    private $languageType;
 
     public function __construct(
-        LocaleServiceInterface $localeService,
+        LanguageServiceInterface $languageService,
         PermissionsServiceInterface $permissionsService,
-        LocaleType $localeType
+        LanguageType $languageType
     ) {
-        $this->localeService = $localeService;
+        $this->languageService = $languageService;
         $this->permissionsService = $permissionsService;
-        $this->localeType = $localeType;
+        $this->languageType = $languageType;
     }
 
     public function getQueries()
     {
         return [
-            'locale' => [
-                'type' => $this->localeType,
-                'description' => 'Get a locale object.',
+            'language' => [
+                'type' => $this->languageType,
+                'description' => 'Get a specific shop language object.',
                 'args' => [
-                    'languageKey' => Type::nonNull(Type::string())
+                    'languageKey' => Type::nonNull(Type::id())
                 ]
             ],
-            'locales' => [
-                'type' => Type::listOf($this->localeType),
-                'description' => 'Get a list of locales.'
+            'languages' => [
+                'type' => Type::listOf($this->languageType),
+                'description' => 'Get a list of languages.'
             ]
         ];
     }
@@ -56,18 +56,18 @@ class LocaleProvider implements QueryProviderInterface
     public function getQueryResolvers()
     {
         return [
-            'locale' => function ($value, $args, $context, ResolveInfo $info) {
+            'language' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
                 $languageKey = $args['languageKey'];
-                return $this->localeService->getLocale($languageKey);
+                return $this->languageService->getLanguage($languageKey);
             },
-            'locales' => function ($value, $args, $context, ResolveInfo $info) {
+            'languages' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */
                 $token = $context->getAuthToken();
                 $this->permissionsService->checkPermission($token, 'mayreaddata');
-                return $this->localeService->getLocales();
+                return $this->languageService->getLanguages();
             }
         ];
     }

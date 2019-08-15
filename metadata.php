@@ -19,12 +19,11 @@ $aModule = [
         'en'        =>  'GraphQL Translation',
     ],
     'description'   =>  [
-        'de' => '<span>Modul um Übersetzungen zu managen</span>',
-
-        'en' => '<span>A module to manage translations through graphQl</span>',
+        'de' => '<span>GraphQL Modul um Übersetzungen zu managen</span>',
+        'en' => '<span>A module to manage translations through GraphQL</span>',
     ],
     'thumbnail'   => 'out/pictures/logo.png',
-    'version'     => '0.0.1',
+    'version'     => '0.0.2',
     'author'      => 'OXID eSales',
     'url'         => 'www.oxid-esales.com',
     'email'       => 'info@oxid-esales.com',

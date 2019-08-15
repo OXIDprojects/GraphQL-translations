@@ -2,9 +2,16 @@
   "name": "oxid-projects/graphql-translations",
   "description": "OXID GraphQL Translations",
   "type": "oxideshop-module",
-  "keywords": ["oxid", "modules", "eShop"],
+  "keywords": [
+    "oxid",
+    "modules",
+    "eShop"
+  ],
   "homepage": "https://www.oxid-esales.com",
-  "license": ["GPL-3.0", "proprietary"],
+  "license": [
+    "GPL-3.0",
+    "proprietary"
+  ],
   "extra": {
     "oxideshop": {
       "target-directory": "oxcom/graphql-translations",
@@ -14,7 +21,7 @@
       ]
     }
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "require": {
     "php": "^7.1",
     "oxid-esales/graphql-base": "*"
