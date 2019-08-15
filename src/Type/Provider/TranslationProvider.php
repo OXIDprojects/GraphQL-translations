@@ -88,8 +88,8 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 'type'        => $this->translationType,
                 'description' => 'update translation object',
                 'args'        => [
-                    'languageKey' => Type::nonNull(Type::string()),
-                    'translationKey' => Type::nonNull(Type::string()),
+                    'languageKey' => Type::nonNull(Type::id()),
+                    'translationKey' => Type::nonNull(Type::id()),
                     'translationValue' => Type::nonNull(Type::string())
                 ]
             ],

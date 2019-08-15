@@ -32,9 +32,9 @@ class TranslationType extends ObjectType
             'name'         => 'Translation',
             'description'  => 'Translation existing in the shop',
             'fields'       => [
+                'languageKey'          => Type::nonNull(Type::id()),
                 'translationKey'    => Type::nonNull(Type::id()),
                 'translationValue'  => Type::nonNull(Type::string()),
-                'language'          => Type::nonNull(Type::string())
             ],
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 return $this->genericFieldResolver->getField($info->fieldName, $value);
