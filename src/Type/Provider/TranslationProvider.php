@@ -93,11 +93,19 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                     'translationValue' => Type::nonNull(Type::string())
                 ]
             ],
+            'resetTranslation' => [
+                'type'        => $this->translationType,
+                'description' => 'Danger! Reset specific changed translation for the language.',
+                'args'        => [
+                    'languageKey' => Type::nonNull(Type::id()),
+                    'translationKey' => Type::nonNull(Type::id())
+                ]
+                ],
             'resetTranslations' => [
                 'type'        => Type::string(),
-                'description' => 'Danger! Delete all changed translations for language.',
+                'description' => 'Danger! Delete all changed translations for the language.',
                 'args'        => [
-                    'languageKey' => Type::nonNull(Type::string())
+                    'languageKey' => Type::nonNull(Type::id())
                 ]
             ]
         ];
@@ -112,6 +120,13 @@ class TranslationProvider implements QueryProviderInterface, MutationProviderInt
                 $this->permissionsService->checkPermission($token, 'maywritetranslation');
 
                 return $this->translationService->updateTranslation($args['languageKey'], $args['translationKey'], $args['translationValue']);
+            },
+            'resetTranslation' => function ($value, $args, $context, ResolveInfo $info) {
+                /** @var AppContext $context */
+                $token = $context->getAuthToken();
+                $this->permissionsService->checkPermission($token, 'maywritetranslation');
+                
+                return $this->translationService->resetTranslation($args['languageKey'],  $args['translationKey']);
             },
             'resetTranslations' => function ($value, $args, $context, ResolveInfo $info) {
                 /** @var AppContext $context */

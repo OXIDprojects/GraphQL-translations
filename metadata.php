@@ -23,7 +23,7 @@ $aModule = [
         'en' => '<span>A module to manage translations through GraphQL</span>',
     ],
     'thumbnail'   => 'out/pictures/logo.png',
-    'version'     => '0.0.2',
+    'version'     => '0.0.3',
     'author'      => 'OXID eSales',
     'url'         => 'www.oxid-esales.com',
     'email'       => 'info@oxid-esales.com',

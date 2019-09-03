@@ -12,5 +12,7 @@ interface TranslationServiceInterface
 
     public function updateTranslation(string $languageKey, string $translationKey, string $translationValue): Translation;
 
+    public function resetTranslation(string $languageKey,  string $translationKey): Translation;
+
     public function resetTranslations(string $languageKey): void;
 }

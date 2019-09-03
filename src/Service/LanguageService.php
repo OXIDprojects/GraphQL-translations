@@ -24,6 +24,7 @@ class LanguageService implements LanguageServiceInterface
             $language->setLanguageName($oxlanguage->name);
             $language->setIsActive($oxlanguage->active == true);
             $language->setIsDefault($oxlanguage->id === $defaultLanguageId);
+            
             $languages[] = $language;
         };
         return $languages;
