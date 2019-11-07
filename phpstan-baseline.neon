@@ -1,0 +1,25 @@
+
+
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property OxidEsales\\\\GraphQL\\\\Translations\\\\Dao\\\\LanguageDao\\:\\:\\$queryBuilderFactory has unknown class OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface as its type\\.$#"
+			count: 1
+			path: src/Dao/LanguageDao.php
+
+		-
+			message: "#^Parameter \\$queryBuilderFactory of method OxidEsales\\\\GraphQL\\\\Translations\\\\Dao\\\\LanguageDao\\:\\:__construct\\(\\) has invalid typehint type OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface\\.$#"
+			count: 1
+			path: src/Dao/LanguageDao.php
+
+		-
+			message: "#^Call to method create\\(\\) on an unknown class OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface\\.$#"
+			count: 3
+			path: src/Dao/LanguageDao.php
+
+		-
+			message: "#^Call to static method getInstance\\(\\) on an unknown class OxidEsales\\\\EshopCommunity\\\\Internal\\\\Container\\\\ContainerFactory\\.$#"
+			count: 2
+			path: src/DataObject/Language.php
+
+

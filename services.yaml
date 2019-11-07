@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\Translations\Dao\LanguageDaoInterface:
+    class: OxidEsales\GraphQL\Translations\Dao\LanguageDao
+    public: true
+
+  OxidEsales\GraphQL\Translations\Controller\:
+    resource: "src/Controller/*"
+    public: true
+
+  OxidEsales\GraphQL\Translations\Framework\NamespaceMapper:
+    class: OxidEsales\GraphQL\Translations\Framework\NamespaceMapper
+    tags: ["graphql_namespace_mapper"]
+
+  OxidEsales\GraphQL\Translations\Service\PermissionProvider:
+    class: OxidEsales\GraphQL\Translations\Service\PermissionProvider
+    tags: ["graphql_permission_provider"]
