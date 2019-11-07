@@ -7,6 +7,10 @@ services:
     class: OxidEsales\GraphQL\Translations\Dao\LanguageDao
     public: true
 
+  OxidEsales\GraphQL\Translations\Dao\TranslationDaoInterface:
+    class: OxidEsales\GraphQL\Translations\Dao\TranslationDao
+    public: true
+
   OxidEsales\GraphQL\Translations\Controller\:
     resource: "src/Controller/*"
     public: true

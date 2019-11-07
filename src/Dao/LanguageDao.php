@@ -10,19 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Translations\Dao;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Translations\DataObject\Language;
 
 class LanguageDao implements LanguageDaoInterface
 {
-
-    /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
-    private $queryBuilderFactory;
-
     public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory
     ) {
-        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     public function getLanguages(int $shopId): array
