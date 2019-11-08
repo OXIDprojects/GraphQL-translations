@@ -18,7 +18,7 @@ class PermissionProvider implements PermissionProviderInterface
         return [
             'admin' => [
                 'LANGUAGE_CREATE',
-                'TRANSLATION_CREATE'
+                'TRANSLATION_UPDATE'
             ]
         ];
     }

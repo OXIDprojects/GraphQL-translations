@@ -17,9 +17,13 @@ interface TranslationDaoInterface
 
     public function getTranslationByKey(string $languageId, string $key, int $shopId): Translation;
 
-
     /**
      * @return Translation[]
      */
-    //public function createTranslation(Translation $language, int $shopId): Translation;
+    public function updateTranslation(Translation $translation, string $languageKey, int $shopId): Translation;
+
+    public function resetTranslationByKey(string $languageKey, string $key, int $shopId): bool;
+
+    public function resetTranslations(string $languageKey, int $shopId): bool;
+
 }

@@ -29,8 +29,7 @@ class Translation
 
     public function __construct(
         string $key,
-        string $value
-
+        ?string $value = null
     ) {
         $this->key = $key;
         $this->value = $value;
@@ -39,7 +38,7 @@ class Translation
     /**
      * @Field(outputType="ID")
      */
-    public function getKey(): ?string
+    public function getKey(): string
     {
         return $this->key;
     }

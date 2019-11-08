@@ -34,7 +34,7 @@ class Translation
     }
 
     /**
-     * @Query
+     * @Query()
      */
     public function translation(string $languageId, string $key): ?TranslationDataObject
     {
@@ -46,7 +46,7 @@ class Translation
     }
 
     /**
-     * @Query
+     * @Query()
      * @return TranslationDataObject[]
      */
     public function translations(string $languageId): array
@@ -58,14 +58,42 @@ class Translation
     }
 
     /**
-     * @Mutation
-     * @Logged
-     * @Right("TRANSLATION_CREATE")
+     * @Mutation()
+     * @Logged()
+     * @Right("TRANSLATION_UPDATE")
      */
-    public function translationCreate(TranslationDataObject $translation): TranslationDataObject
+    public function translationUdate(TranslationDataObject $translation, string $languageKey): TranslationDataObject
     {
-        return $this->translationDao->createTranslation(
+        return $this->translationDao->updateTranslation(
             $translation,
+            $languageKey,
+            $this->legacyService->getShopId()
+        );
+    }
+
+    /**
+     * @Mutation()
+     * @Logged()
+     * @Right("TRANSLATION_UPDATE")
+     */
+    public function translationReset(string $languageKey, string $key): bool
+    {
+        return $this->translationDao->resetTranslationByKey(
+            $languageKey,
+            $key,
+            $this->legacyService->getShopId()
+        );
+    }
+
+    /**
+     * @Mutation()
+     * @Logged()
+     * @Right("TRANSLATION_UPDATE")
+     */
+    public function translationResetAll(string $languageKey): bool
+    {
+        return $this->translationDao->resetTranslations(
+            $languageKey,
             $this->legacyService->getShopId()
         );
     }

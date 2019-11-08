@@ -35,7 +35,7 @@ class Language
     }
 
     /**
-     * @Query
+     * @Query()
      */
     public function language(string $id): ?LanguageDataObject
     {
@@ -46,7 +46,7 @@ class Language
     }
 
     /**
-     * @Query
+     * @Query()
      * @return LanguageDataObject[]
      */
     public function languages(): array
@@ -56,16 +56,16 @@ class Language
         );
     }
 
-    /**
-     * @Mutation
-     * @Logged
-     * @Right("LANGUAGE_CREATE")
-     */
-    public function languageCreate(LanguageDataObject $language): LanguageDataObject
-    {
-        return $this->languageDao->createLanguage(
-            $language,
-            $this->legacyService->getShopId()
-        );
-    }
+    // /**
+    //  * @Mutation()
+    //  * @Logged()
+    //  * @Right("LANGUAGE_CREATE")
+    //  */
+    // public function languageCreate(LanguageDataObject $language): LanguageDataObject
+    // {
+    //     return $this->languageDao->createLanguage(
+    //         $language,
+    //         $this->legacyService->getShopId()
+    //     );
+    // }
 }
