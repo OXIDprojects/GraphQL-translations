@@ -13,7 +13,7 @@ locale a list of translations. And you can send back a translation
 that then will be set in the shop. There is also a mutation provided
 to reset the translations changed through this API.
 
-you can use it with [graph-translations](https://github.com/OXIDprojects/GraphQL-translations)
+You can use it together with the React module for the admin side of the shop [react-translations](https://github.com/OXIDprojects/React-translations)
 
 To use this module, the following prerequisites exist: Your shop
 version must be at least 6.4.0 And you need the "oxid-esales/graphql-base": "^1.0"
