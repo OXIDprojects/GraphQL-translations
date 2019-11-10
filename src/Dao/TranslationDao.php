@@ -27,14 +27,20 @@ class TranslationDao implements TranslationDaoInterface
     }
 
     /**
+     * Restruns all translations from a specific language
      * 
+     * @param string $languageKey
+     * @return array
+     * @throws LanguageNotFound
      */
-    public function getTranslations(string $languageId, int $shopId): array
+    public function getTranslations(string $languageKey, int $shopId): array
     {
         $translations = [];
-       
-        $oxLang = Registry::getLang();
-        $oxTranslations = $this->fetchMethod->invoke($oxLang, $languageId);
+
+        if(empty(!$languageKey)){
+            $oxLang = Registry::getLang();
+            $oxTranslations = $this->fetchMethod->invoke($oxLang, $this->getLanguageId($languageKey));
+        }
 
         foreach ($oxTranslations as $key => $value) {
             if (strtoupper($key) !== $key) {
@@ -52,23 +58,51 @@ class TranslationDao implements TranslationDaoInterface
     }
 
     /**
-     * 
+     * @param string $languageKey
+     * @return int
+     * @throws LanguageNotFound
      */
-    public function getTranslationByKey(string $languageId, string $key, int $shopId): Translation
+    private function getLanguageId(string $languageKey): int
     {
-        foreach ($this->getTranslations($languageId, $shopId) as $translation) {
-            if ($translation->getKey() === strtoupper($key)) {
-                return $translation;
+        $oxlang = Registry::getLang();
+        foreach ($oxlang->getLanguageArray() as $lang) {
+            if ($lang->abbr === $languageKey) {
+                return $lang->id;
             }
         }
+        throw new LanguageNotFound('Language not found!');
     }
 
     /**
+     *
+     * 
+     * @param string $languageKey
+     * @param string $key
+     *  @param int $shopId
      * @return Translation
      * @throws LanguageNotFound
      * @throws TranslationKeyNotFound
      */
-    public function updateTranslation(Translation $translation, string $languageKey, int $shopKey): Translation
+    public function getTranslationByKey(string $languageKey, string $key, int $shopId): Translation
+    {
+        foreach ($this->getTranslations($languageKey, $shopId) as $translation) {
+            if ($translation->getKey() === strtoupper($key)) {
+                return $translation;
+            }
+        }
+
+        throw new TranslationKeyNotFound('Translation key not found!');
+    }
+
+    /**
+     * @param Translation $translation
+     * @param string $languageKey
+     * @param int $shopId
+     * @return Translation
+     * @throws LanguageNotFound
+     * @throws TranslationKeyNotFound
+     */
+    public function updateTranslation( string $languageKey, Translation $translation, int $shopId): Translation
     {
         $config = $this->getConfig();
         $languages = $config->getConfigParam('aLanguages');
@@ -112,6 +146,9 @@ class TranslationDao implements TranslationDaoInterface
         return Path::join($this->getConfig()->getAppDir(), 'translations', $languageKey, 'extra_lang.php');
     }
 
+    /**
+     * Write translation in  the custom file
+     */
     private function writeTranslation(array $aLang,  string $translationFile): bool
     {
         $content = '<?php
@@ -125,10 +162,8 @@ $aLang = ';
 
         // Write the contents back to the file
         if (file_put_contents($translationFile, $content)){
-            if($this->deleteCaches()){
-                return true;
-            }
-            return false;
+            $this->deleteCaches();
+            return true; 
         }
 
         throw new TranslationKeyNotFound();    
@@ -147,10 +182,11 @@ $aLang = ';
         $classCache = new \ReflectionProperty(Language::class, '_aLangCache');
         $classCache->setAccessible(true);
         $classCache->setValue(Registry::getLang(), []);
+        
     }
 
     /**
-     * Write array separated by tabs
+     * Create array separated by tabs
      * 
      * @param $arr
      * @param int $pad
@@ -175,6 +211,11 @@ $aLang = ';
 
     /**
      * Reset translation by tranlsation key to the default value
+     * 
+     * @param string $languageKey
+     * @param string $key
+     * @param int $shopId
+     * @return bool  
      */
     public function resetTranslationByKey(string $languageKey, string $key, int $shopId): bool
     {
@@ -190,6 +231,10 @@ $aLang = ';
 
     /**
      * Reset all custom translations
+     * 
+     * @param string $languageKey
+     * @param int $shopId
+     * @return bool  
      */
     public function resetTranslations(string $languageKey, int $shopId): bool
     {
@@ -198,9 +243,7 @@ $aLang = ';
             unlink($translationFile);
         }
     
-        if($this->deleteCaches()){
-            return true;
-        }
-        return false;
+        $this->deleteCaches();
+        return true;
     }
 }

@@ -17,6 +17,7 @@ use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 class Language
 {
@@ -35,17 +36,21 @@ class Language
     }
 
     /**
+     * Retrun a language object by ID
+     * 
      * @Query()
      */
-    public function language(string $id): ?LanguageDataObject
+    public function language(ID $id): ?LanguageDataObject
     {
         return $this->languageDao->getLanguageById(
-            $id,
+            $id->val(),
             $this->legacyService->getShopId()
         );
     }
 
     /**
+     * Returns all the languages available in the shop
+     * 
      * @Query()
      * @return LanguageDataObject[]
      */

@@ -17,8 +17,5 @@ interface LanguageDaoInterface
 
     public function getLanguages(int $shopId): array;
 
-    /**
-     * @return Language[]
-     */
     //public function createLanguage(Language $language, int $shopId): Language;
 }

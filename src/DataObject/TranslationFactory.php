@@ -12,18 +12,19 @@ namespace OxidEsales\GraphQL\Translations\DataObject;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\GraphQL\Translations\DataObject\Translation;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 class TranslationFactory
 {
     /**
      * @Factory()
      */
-    public static function updateTranslation(
-        string $key,
-        ?string $value = null
+    public static function translationUpdate(
+        ID $key,
+        string $value
     ): Translation {
         return new Translation(
-            $key,
+            $key->val(),
             $value
         );
     }

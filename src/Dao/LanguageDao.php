@@ -14,10 +14,6 @@ use OxidEsales\GraphQL\Translations\DataObject\Language;
 
 class LanguageDao implements LanguageDaoInterface
 {
-    public function __construct(
-    ) {
-    }
-
     public function getLanguages(int $shopId): array
     {
         $defaultLanguageId = (int) Registry::getConfig()->getConfigParam('sDefaultLang');

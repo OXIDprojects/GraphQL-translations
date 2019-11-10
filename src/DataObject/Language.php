@@ -85,7 +85,7 @@ class Language
     /**
      * @Field()
      */
-    public function getIsDeafult(): bool
+    public function getIsDefault(): bool
     {
         return $this->isDefault;
     }

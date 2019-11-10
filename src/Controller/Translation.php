@@ -16,6 +16,7 @@ use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 class Translation
 {
@@ -35,24 +36,24 @@ class Translation
 
     /**
      * @Query()
+     * @return TranslationDataObject[]
      */
-    public function translation(string $languageId, string $key): ?TranslationDataObject
+    public function translations(ID $languageKey): array
     {
-        return $this->translationDao->getTranslationByKey(
-            $languageId,
-            $key,
+        return $this->translationDao->getTranslations(
+            $languageKey->val(),
             $this->legacyService->getShopId()
         );
     }
 
     /**
      * @Query()
-     * @return TranslationDataObject[]
      */
-    public function translations(string $languageId): array
+    public function translation(ID $languageKey, ID $key): ?TranslationDataObject
     {
-        return $this->translationDao->getTranslations(
-            $languageId,
+        return $this->translationDao->getTranslationByKey(
+            $languageKey->val(),
+            $key->val(),
             $this->legacyService->getShopId()
         );
     }
@@ -62,11 +63,11 @@ class Translation
      * @Logged()
      * @Right("TRANSLATION_UPDATE")
      */
-    public function translationUdate(TranslationDataObject $translation, string $languageKey): TranslationDataObject
+    public function translationUpdate( ID $languageKey, TranslationDataObject $translation): TranslationDataObject
     {
         return $this->translationDao->updateTranslation(
+            $languageKey->val(),
             $translation,
-            $languageKey,
             $this->legacyService->getShopId()
         );
     }
@@ -76,11 +77,11 @@ class Translation
      * @Logged()
      * @Right("TRANSLATION_UPDATE")
      */
-    public function translationReset(string $languageKey, string $key): bool
+    public function translationReset(ID $languageKey, ID $key): bool
     {
         return $this->translationDao->resetTranslationByKey(
-            $languageKey,
-            $key,
+            $languageKey->val(),
+            $key->val(),
             $this->legacyService->getShopId()
         );
     }
@@ -90,10 +91,10 @@ class Translation
      * @Logged()
      * @Right("TRANSLATION_UPDATE")
      */
-    public function translationResetAll(string $languageKey): bool
+    public function translationResetAll(ID $languageKey): bool
     {
         return $this->translationDao->resetTranslations(
-            $languageKey,
+            $languageKey->val(),
             $this->legacyService->getShopId()
         );
     }

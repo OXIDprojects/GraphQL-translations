@@ -13,14 +13,12 @@ use OxidEsales\GraphQL\Translations\DataObject\Translation;
 
 interface TranslationDaoInterface
 {
-    public function getTranslations(string $languageId, int $shopId): array;
 
-    public function getTranslationByKey(string $languageId, string $key, int $shopId): Translation;
+    public function getTranslations(string $languageKey, int $shopId): array;
 
-    /**
-     * @return Translation[]
-     */
-    public function updateTranslation(Translation $translation, string $languageKey, int $shopId): Translation;
+    public function getTranslationByKey(string $languageKey, string $key, int $shopId): Translation;
+
+    public function updateTranslation(string $languageKey, Translation $translation, int $shopId): Translation;
 
     public function resetTranslationByKey(string $languageKey, string $key, int $shopId): bool;
 
