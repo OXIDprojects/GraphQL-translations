@@ -77,7 +77,7 @@ class Translation
      * @Logged()
      * @Right("TRANSLATION_UPDATE")
      */
-    public function translationReset(ID $languageKey, ID $key): bool
+    public function translationReset(ID $languageKey, ID $key): TranslationDataObject
     {
         return $this->translationDao->resetTranslationByKey(
             $languageKey->val(),

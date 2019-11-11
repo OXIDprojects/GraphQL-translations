@@ -14,6 +14,7 @@ use OxidEsales\GraphQL\Translations\Dao\TranslationDaoInterface;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @Type()
@@ -36,11 +37,11 @@ class Translation
     }
 
     /**
-     * @Field(outputType="ID")
+     * @Field()
      */
-    public function getKey(): string
+    public function getKey(): ID
     {
-        return $this->key;
+        return new ID($this->key);
     }
 
     /**

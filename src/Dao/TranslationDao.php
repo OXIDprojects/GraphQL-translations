@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\Facts\Facts;
 use OxidEsales\GraphQL\Translations\DataObject\Translation;
+use OxidEsales\GraphQl\Translations\Exception\LanguageNotFound;
+use OxidEsales\GraphQl\Translations\Exception\TranslationKeyNotFound;
 use Webmozart\PathUtil\Path;
 
 class TranslationDao implements TranslationDaoInterface
@@ -86,7 +88,7 @@ class TranslationDao implements TranslationDaoInterface
     public function getTranslationByKey(string $languageKey, string $key, int $shopId): Translation
     {
         foreach ($this->getTranslations($languageKey, $shopId) as $translation) {
-            if ($translation->getKey() === strtoupper($key)) {
+            if ($translation->getKey()->val() === strtoupper($key)) {
                 return $translation;
             }
         }
@@ -108,7 +110,7 @@ class TranslationDao implements TranslationDaoInterface
         $languages = $config->getConfigParam('aLanguages');
 
         $langName = $languages[$languageKey];
-        $key = $translation->getKey();
+        $key = $translation->getKey()->val();
         $value = $translation->getValue();
 
         // we need to keep the file variable array name ($aLang), in order to merge with the last changes
@@ -182,7 +184,6 @@ $aLang = ';
         $classCache = new \ReflectionProperty(Language::class, '_aLangCache');
         $classCache->setAccessible(true);
         $classCache->setValue(Registry::getLang(), []);
-        
     }
 
     /**
@@ -217,18 +218,20 @@ $aLang = ';
      * @param int $shopId
      * @return bool  
      */
-    public function resetTranslationByKey(string $languageKey, string $key, int $shopId): bool
+    public function resetTranslationByKey(string $languageKey, string $key, int $shopId): Translation
     {
         $translationFile = $this->getTranslationFile($languageKey);
         if (file_exists($translationFile)) {
             include $translationFile;
+            unset($aLang [$key]);
+            $this->writeTranslation($aLang,  $translationFile);
+         
+            return $this->getTranslationByKey($languageKey, $key, $shopId);
         }
 
-        unset( $aLang [$key] );
-
-        return $this->writeTranslation($aLang,  $translationFile);
+        throw new TranslationKeyNotFound();
     }
-
+        
     /**
      * Reset all custom translations
      * 
