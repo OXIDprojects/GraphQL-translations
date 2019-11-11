@@ -20,7 +20,7 @@ interface TranslationDaoInterface
 
     public function updateTranslation(string $languageKey, Translation $translation, int $shopId): Translation;
 
-    public function resetTranslationByKey(string $languageKey, string $key, int $shopId): bool;
+    public function resetTranslationByKey(string $languageKey, string $key, int $shopId): Translation;
 
     public function resetTranslations(string $languageKey, int $shopId): bool;
 
