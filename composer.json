@@ -2,7 +2,6 @@
   "name": "oxid-community/graphql-translations",
   "description": "OXID eSales GraphQL Translations module",
   "type": "oxideshop-module",
-  "version": "1.0.0",
   "keywords": [
     "oxid",
     "modules",
